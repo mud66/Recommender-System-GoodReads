@@ -17,8 +17,9 @@ In this approach, you generate recommendations using both content-based and coll
 
 content_score = content_based_model.predict(user, item)
 collab_score = collaborative_model.predict(user, item)
+
 final_score = 0.5 * content_score + 0.5 * collab_score
-AI-generated code. Review and use carefully. More info on FAQ.
+
 You can adjust the weights based on the performance of each model.
 
 2. Switching Hybrid
