@@ -10,6 +10,8 @@ Using content and collaborative based filtering build a recommender system for t
 - gridsearchcv
 - hybrid approach
 
+Data: https://mengtingwan.github.io/data/goodreads.html#datasets
+
 One important one to consider is the source of user preference, is it explicit (thumbs up, stars, ratings) or implicit (views, clicks, time spent, purchases).
 
 1. Weighted Hybrid
