@@ -16,6 +16,7 @@ One important one to consider is the source of user preference, is it explicit (
 In this approach, you generate recommendations using both content-based and collaborative filtering methods, then combine the results by assigning weights to each method. For example:
 
 content_score = content_based_model.predict(user, item)
+
 collab_score = collaborative_model.predict(user, item)
 
 final_score = 0.5 * content_score + 0.5 * collab_score
