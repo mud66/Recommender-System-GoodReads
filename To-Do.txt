@@ -1,0 +1,11 @@
+To-Do
+explain dataaset and goodreads like shelves and mayen images
+need to split into test and train sets to properly evaluate
+filtering out valid users but thats not realsistic and have ssen it  before
+svd for user based collaborative
+how to merge rating and review to get better input
+use image?
+how to filter out non english language
+
+item based has table for every user
+user down side and books along top with data being rating and review
