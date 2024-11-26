@@ -9,3 +9,12 @@ how to filter out non english language
 
 item based has table for every user
 user down side and books along top with data being rating and review
+
+
+if user has read no books/not in df
+then use content filtering
+
+
+a lot less lower ratings
+sampling and bias
+ranking metrics and graphs
