@@ -18,3 +18,5 @@ then use content filtering
 a lot less lower ratings
 sampling and bias
 ranking metrics and graphs
+nmf??
+item item
