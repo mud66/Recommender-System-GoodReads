@@ -30,41 +30,13 @@ review embdeddings for the cotnent filtering
 
 the more fetaures in a model the less explianale it is 
 
-1. Jaccard Similarity:
-
-Usage: When comparing binary data, such as whether a user has read or not read a book.
-
-Example: Two users, User A and User B, have read several books. Jaccard similarity can be used to determine how similar their reading habits are based on the overlap of books they've read.
-
-Ideal For: Sparsely populated user-item interaction matrices, where the presence or absence of interactions is more relevant than the exact ratings.
-
-2. Dice-Sørensen Similarity:
-
-Usage: Similar to Jaccard, but gives more weight to the common items. Useful when emphasizing shared interactions.
-
-Example: If we want to identify users who have a higher proportion of shared books in their reading history, Dice-Sørensen similarity would be effective.
-
-Ideal For: Situations where the overlap of interactions is particularly significant.
 
 
 
 
-Correlation Measures
-1. Pearson Correlation:
 
-Usage: Measuring the linear relationship between continuous variables, such as user ratings.
 
-Example: Calculating the Pearson correlation between two users based on their ratings of books to identify users with similar rating patterns.
 
-Ideal For: When the goal is to understand the strength and direction of the linear relationship between ratings.
-
-2. Spearman Correlation:
-
-Usage: Assessing the rank correlation between variables, useful for non-linear relationships.
-
-Example: Comparing the ranked preferences of books between two users, regardless of the exact rating values.
-
-Ideal For: Non-parametric data and when the relationship between variables is monotonic but not necessarily linear.
 
 Practical Application in Book Recommender Systems
 User-User Collaborative Filtering:
@@ -78,3 +50,11 @@ Item-Item Collaborative Filtering:
 Similarity: When looking at books that users have interacted with (read or not read), cosine similarity can be used to measure the similarity between books based on user interactions.
 
 Correlation: When analyzing ratings given to books, Pearson or Spearman correlation helps in identifying books that receive similar ratings across users.
+
+
+gnn: review embdeddings
+knn: book data
+svd: ratings
+
+
+need to do the edges function things are mapping after split?
