@@ -110,4 +110,3 @@ class BookRecommender:
 
         # Map book_id to index (make sure this map is consistent with the embeddings)
         self.book_id_to_index = {book_id: idx for idx, book_id in enumerate(self.books['book_id'])}
-

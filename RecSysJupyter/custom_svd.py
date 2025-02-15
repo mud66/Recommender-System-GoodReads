@@ -1,12 +1,13 @@
-from sklearn.utils.extmath import randomized_svd 
+from sklearn.utils.extmath import randomized_svd
 from surprise import AlgoBase, Trainset
 import numpy as np
 
-class RandomizedSVD(AlgoBase):
-    def __init__(self, n_factors=60, n_iter=18, random_state=None, power_iteration_normalizer='QR'):
+class RegularizedRandomizedSVD(AlgoBase):
+    def __init__(self, n_factors=500, n_iter=60, reg_param=0.1, random_state=None, power_iteration_normalizer='QR'):
         super().__init__()
         self.n_factors = n_factors
         self.n_iter = n_iter
+        self.reg_param = reg_param  # Regularization parameter
         self.random_state = random_state
         self.power_iteration_normalizer = power_iteration_normalizer
 
@@ -27,8 +28,12 @@ class RandomizedSVD(AlgoBase):
                                       random_state=self.random_state,
                                       power_iteration_normalizer=self.power_iteration_normalizer)
 
-        self.user_factors = U.dot(np.diag(Sigma))
-        self.item_factors = VT.T
+        # Regularization: Add penalty to the singular values
+        Sigma = Sigma / (1 + self.reg_param)  # Regularize the singular values
+
+        # Apply regularization by adjusting the user and item factors based on the updated Sigma
+        self.user_factors = U.dot(np.diag(Sigma))  # Latent user factors
+        self.item_factors = VT.T  # Latent item factors
 
         return self
 
