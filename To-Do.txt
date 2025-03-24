@@ -1,7 +1,0 @@
-do i need separate background to lit review
-where can i put equations for metrics if i need them
-link back to figures at all times and alos need to chnage diagram to make svd also fill in the missing review ratings and chnage write up of the design too
-add all refereneces
-how do i hand in notebooks and data
-hybrud implementation and justify
-explainability 
