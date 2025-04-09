@@ -70,7 +70,7 @@ No data processing required — preprocessed files and trained models are saved 
 
 ##  Hybrid System  
 
-![Hybrid Pipeline](pipeline%20.png)
+![Hybrid Pipeline](./pipeline.png)
 Main hybrid pipeline in 'Hybrid/Hybrid.ipynb' with gat .py file to load model.
 
 ## References
