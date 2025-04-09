@@ -1,41 +1,78 @@
-# Recommender-System-GoodReads
-******In Progress*****
+# 📚 Recommender-System-GoodReads  
+**Undergraduate Thesis – University of York (2025)**  
+**Dataset**: [Goodreads](https://mengtingwan.github.io/data/goodreads.html#datasets)
 
-Repository for undergrad thesis at University of York, graduating 2025
+---
 
-Using content and collaborative based filtering build a recommender system for the goodreads dataset
+## Project Overview  
+Current recommendation methods often favour bestsellers and popular titles, leaving niche or lesser-known books overlooked. Goodreads, while widely used, fails to offer truly personalised and transparent suggestions due to its outdated design and popularity-based algorithms. This project addresses these limitations by building a hybrid recommendation system that combines collaborative filtering, content-based methods, and graph-based models to enhance:  
+- **Accuracy**, even with sparse or cold-start data  
+- **Novelty**, helping users discover overlooked books  
+- **Explainability**, offering insights into why a book was recommended  
 
-- dont include sequels of the book or movie
-- how to properly evaluate a recommendation
-- gridsearchcv
-- hybrid approach
+---
+## Core Models and Techniques  
 
-Data: https://mengtingwan.github.io/data/goodreads.html#datasets
+| Model        | Description |
+|-------------|-------------|
+| **SVD**      | Used to impute ratings for books that users have read but not rated. These imputed ratings are used by NMF and GATv2Conv. |
+| **NMF**      | Matrix factorisation model for predicting ratings and offering interpretability via latent factor analysis. |
+| **GATv2Conv**| A graph-based model using review sentiment, review embeddings, book genres, and user genre preferences to predict ratings. |
+| **HDBSCAN**  | Clustering books based on content feature embeddings for content-based recommendations, especially for cold-start and new users. |
 
-One important one to consider is the source of user preference, is it explicit (thumbs up, stars, ratings) or implicit (views, clicks, time spent, purchases).
+---
+No data processing required — preprocessed files and trained models are saved in the `Pickle` folder.  
 
-1. Weighted Hybrid
-In this approach, you generate recommendations using both content-based and collaborative filtering methods, then combine the results by assigning weights to each method. For example:
+- **LoadData**: Sample and merge datasets to align IDs, expand shelves, add genres, and save processed data.  
+- **EDA**: Exploratory plots and dataset statistics.
+- **Book Embeddings**: Uses `SentenceTransformer('all-MiniLM-L6-v2')` on combined book metadata (title, description, authors, genres, shelves).  
+- **Review Embeddings**: Same model, applied to review text. Saved to `Pickle/review_embeddings.pkl`.  
+- **Sentiment Scores**: Uses `"distilbert-base-uncased-finetuned-sst-2-english"` via HuggingFace pipeline to assign sentiment scores and confidence. Saved to `Pickle/review_score.pkl`.  
+- **User Genres**: Extracts top 4 genres read by each user. Saved to `Pickle/user_most_common_genres.pkl`.  
 
-content_score = content_based_model.predict(user, item)
+##  Recommender Models  
 
-collab_score = collaborative_model.predict(user, item)
+###  SVD  
+- Used on user-book interactions with missing ratings filtered and preprocessed.  
+- 2% of original rows reintroduced for variety.  
+- Ratings predicted for missing entries and saved to `Pickle/best_svd_model.pkl`.  
+- If a user/book is missing, rating left null (no fallback to global mean).  
 
-final_score = 0.5 * content_score + 0.5 * collab_score
+###  NMF  
+- Dataset split, balanced (rating classes ≥0.75% of majority), and normalised.  
+- Uses SVD-imputed ratings where user has read but not rated a book.  
+- Trained using `Surprise` with hyperparameter tuning (GridSearchCV, RMSE minimised).  
+- Returns top 5 books with predicted ratings and explanation from latent factor contributions.
 
-You can adjust the weights based on the performance of each model.
+###  GATv2Conv  
+- Input data includes reviews, sentiment scores, embeddings, user genres, book genres, and imputed ratings.  
+- Dataset split 80/10/10 and upsampled (minority classes to 75%).  
+- Node features: one-hot encoded genres.  
+- Edge attributes: ratings, sentiment scores, review embeddings.  
+- Architecture:
+  - 5 GATv2Conv layers  
+  - 30 hidden channels  
+  - 25 attention heads  
+  - ELU activation, dropout 0.2, AdamW (lr=1e-5, weight decay=1e-4)  
+  - MSE loss, early stopping (patience=10)  
+- Recommender calculates predicted ratings (dot product of user/book embeddings) and returns top 5 results.
 
-2. Switching Hybrid
-This method switches between content-based and collaborative filtering based on certain conditions. For example, use content-based filtering for new users (cold start problem) and collaborative filtering for users with sufficient interaction history.
+###  HDBSCAN  
+- Book feature embeddings reduced via UMAP (10 components, cosine distance).  
+- HDBSCAN applies soft clustering with Euclidean distance.  
+- Membership vectors used to recommend thematically similar books.  
+- For low-interaction users:
+  - Recommend from shared clusters (≥0.01 probability), else FAISS-based fallback.  
+- For new users:
+  - Recommend from sampled clusters, ranked by L2 norm (proximity to origin), with fallback to global similarity or random.  
 
-3. Feature Augmentation
-Use the output of one model as an input feature for the other. For example, use collaborative filtering to generate user preferences and include these as features in the content-based model.
+---
 
-4. Model Blending
-Train separate models for content-based and collaborative filtering, then blend their outputs using machine learning techniques. For example, you can use a meta-learner to combine the predictions from both models.
+##  Hybrid System  
 
-Benefits of Hybrid Systems:
-Improved Accuracy: Leverages the strengths of both methods.
-Diverse Recommendations: Provides a broader range of recommendations.
-Cold Start Problem: Mitigates issues with new users or items.
-Hybrid systems are widely used in industry, including by companies like Netflix and Amazon, to enhance recommendation accuracy and user satisfaction
+![Hybrid Pipeline](pipeline%20(1).png)
+Main hybrid pipeline in 'Hybrid/Hybrid.ipynb' with gat .py file to load model.
+
+## References
+Mengting Wan, Julian McAuley, "Item Recommendation on Monotonic Behavior Chains", in RecSys'18.
+Mengting Wan, Rishabh Misra, Ndapa Nakashole, Julian McAuley, "Fine-Grained Spoiler Detection from Large-Scale Review Corpora", in ACL'19.
