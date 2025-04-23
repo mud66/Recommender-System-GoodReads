@@ -1,7 +1,7 @@
 # 📚 Recommender-System-GoodReads  
 **Undergraduate Thesis – University of York (2025)**  
 **Dataset**: [Goodreads](https://mengtingwan.github.io/data/goodreads.html#datasets)
-
+Please read 'README' instructions in Data and Pickle Directories
 ---
 
 ## Project Overview  
@@ -21,9 +21,7 @@ Current recommendation methods often favour bestsellers and popular titles, leav
 | **HDBSCAN**  | Clustering books based on content feature embeddings for content-based recommendations, especially for cold-start and new users. |
 
 ---
-No data processing required — preprocessed files and trained models are saved in the `Pickle` folder.  
-
-- **LoadData**: Sample and merge datasets to align IDs, expand shelves, add genres, and save processed data.  
+- **LoadData**: Sample and merge datasets in 'Data' to align IDs, expand shelves, add genres, and save processed data into 'Pickle'.  
 - **EDA**: Exploratory plots and dataset statistics.
 - **Book Embeddings**: Uses `SentenceTransformer('all-MiniLM-L6-v2')` on combined book metadata (title, description, authors, genres, shelves).  
 - **Review Embeddings**: Same model, applied to review text. Saved to `Pickle/review_embeddings.pkl`.  
