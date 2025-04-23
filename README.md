@@ -1,6 +1,6 @@
 # 📚 Recommender-System-GoodReads  
 **Undergraduate Thesis – University of York (2025)**  
-**Dataset**: [Goodreads](https://mengtingwan.github.io/data/goodreads.html#datasets)
+**Original Dataset**: [Goodreads](https://mengtingwan.github.io/data/goodreads.html#datasets)
 
 > [!CAUTION]
 > Please read 'README' instructions in Data and Pickle Directories to download data files
